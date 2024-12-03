@@ -58,9 +58,16 @@ keymap.set("n", "N", "Nzzzv")
 
 -- Toggle virtual_text diagnostic
 keymap.set("n", "tt", function()
-  local current_config = vim.diagnostic.config()
-  current_config.virtual_text = not current_config.virtual_text
-  vim.diagnostic.config(current_config)
+	local current_config = vim.diagnostic.config()
+	if current_config then
+		current_config.virtual_text = not current_config.virtual_text
+		vim.diagnostic.config(current_config)
+	else
+		vim.notify("No diagnostic config found. Setting a default one.", vim.log.levels.INFO)
+		vim.diagnostic.config({
+			virtual_text = true,
+		})
+	end
 end)
 
 -- Undo tree
@@ -74,8 +81,8 @@ mapCopilot("i", "<C-H>", "copilot#Previous()", { silent = true, expr = true, rep
 
 -- Replace word under cursor
 keymap.set(
-  "n",
-  "gs",
-  [[:let @/='\<'.expand('<cword>').'\>'<CR>:set hls<CR>cgn]],
-  { desc = "Replace word under cursor" }
+	"n",
+	"gs",
+	[[:let @/='\<'.expand('<cword>').'\>'<CR>:set hls<CR>cgn]],
+	{ desc = "Replace word under cursor" }
 )
